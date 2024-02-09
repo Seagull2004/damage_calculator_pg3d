@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Damage calc PG3D</title>
+    <link href="../src/output.css" rel="stylesheet">
+    <script src="./librerie/jquery.min.js"></script>
+    <link rel="icon" href="https://vignette.wikia.nocookie.net/pixel-gun-3d/images/d/d4/Halloween_Mask.png/revision/latest?cb=20190923214949">
+    <script>
+        const modulesDMG = [
+            [0, 5, 8, 10, 15, 20, 29, 38, 48, 60, 72],      // <- epic values
+            [0, 5, 7, 9, 13, 18, 27, 46, 44, 55, 66],       // <- rare values
+            [0, 4, 5, 8, 11, 15, 23, 30, 38, 47, 57],       // <- legendary values
+            [0, 3, 5, 7, 10, 13, 20, 26.50, 33, 41, 49]     // <- mythical values
+        ]
+        const capeEditorDMG = 5
+        const halloweenMaskDMG = 7
+        const hatDMG = [
+            0,      // <- empty hat
+            5,      // <- crownDMG
+            7       // <- tiaraDMG
+        ]
+
+        function ingradisciBottone(div)
+        {
+            $(div).prevAll().removeClass("scale-150")
+            $(div).nextAll().removeClass("scale-150")
+            $(div).addClass("scale-150")
+            totalDamage()
+        }
+
+        // e.g
+        // selectedInList("rarityList") = #rarità selezionata
+        // selectedInList("moduleList") = #modulo selezionato
+        // selectedInList("capeList") = #cape selezionato
+        // selectedInList("maskList") = #mask selezionata
+        // selectedInList("hatList") = #hat selezionato
+        function selectedInList(id)
+        {
+            let div = document.getElementById(id)
+            let i = 0
+            let element = div.firstElementChild
+            
+            while(element)
+            {
+                let isSelected = $(element).hasClass("scale-150")
+                if (isSelected)
+                {
+                    return i
+                }
+                element = element.nextElementSibling
+                i++
+            }
+            return -1
+        }
+
+        function totalDamage()
+        {
+            let baseDamage = document.getElementById("damage").value
+            let moduleDamage = modulesDMG[selectedInList("rarityList")][selectedInList("moduleList")]
+            let capeDamage = ((selectedInList("capeList") == 0) ? 0 : capeEditorDMG)
+            let maskDamage = ((selectedInList("maskList") == 0) ? 0 : halloweenMaskDMG)
+            let hatDamage = hatDMG[selectedInList("hatList")]
+            
+            let totalDamage = baseDamage * ((100 + moduleDamage) / 100) * ((100 + capeDamage) / 100) * ((100 + maskDamage) / 100) * ((100 + hatDamage) / 100)
+
+            document.getElementById("outputTotalDamage").innerHTML = Math.round(totalDamage)
+        }
+    </script>
+</head>
+<body class=" bg-gray-800 w-full flex flex-col items-center text-white">
+    <h1 class="  font-extrabold text-6xl p-7">
+        Damage Calculator PG3D
+    </h1>
+    <div class="bg-white h-[5px] rounded w-full mx-2"></div>
+    <section  class="flex flex-col items-center">
+        <span class="mt-5 mb-2">
+            Rarity:
+        </span>
+        <div class="flex item-row" id="rarityList">
+            <div onclick="ingradisciBottone(this)" class=" bg-blue-500 m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200"></div>
+            <div onclick="ingradisciBottone(this)" class=" bg-yellow-400 m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200"></div>
+            <div onclick="ingradisciBottone(this)" class=" bg-red-600 m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200"></div>
+            <div onclick="ingradisciBottone(this)" class=" bg-purple-700 m-2 h-10 w-10 rounded-full scale-150 cursor-pointer transition-all duration-200"></div>
+        </div>
+        <span class="mt-5 mb-2">
+            Module level:
+        </span>
+        <div class="flex item-row font-extrabold flex-wrap items-center justify-center" id="moduleList">
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full scale-150 cursor-pointer transition-all duration-200 flex items-center justify-center">
+                <img src="./img/module.png" alt="">
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                I
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                II
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                III
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                IV
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                V
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                VI
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                VII
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                VIII
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                IX
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                X
+            </div>
+        </div>
+        <span class="mt-5 mb-2">
+            Cape:
+        </span>
+        <div class="flex item-row font-bold" id="capeList">
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full scale-150 cursor-pointer transition-all duration-200 flex items-center justify-center">
+                <svg class="h-5" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>cross</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-469.000000, -1041.000000)" fill="#ff2600"> <path d="M487.148,1053.48 L492.813,1047.82 C494.376,1046.26 494.376,1043.72 492.813,1042.16 C491.248,1040.59 488.712,1040.59 487.148,1042.16 L481.484,1047.82 L475.82,1042.16 C474.257,1040.59 471.721,1040.59 470.156,1042.16 C468.593,1043.72 468.593,1046.26 470.156,1047.82 L475.82,1053.48 L470.156,1059.15 C468.593,1060.71 468.593,1063.25 470.156,1064.81 C471.721,1066.38 474.257,1066.38 475.82,1064.81 L481.484,1059.15 L487.148,1064.81 C488.712,1066.38 491.248,1066.38 492.813,1064.81 C494.376,1063.25 494.376,1060.71 492.813,1059.15 L487.148,1053.48" id="cross" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                <img src="./img/cape.png" alt="">
+            </div>
+        </div>
+        <span class="mt-5 mb-2">
+            Mask:
+        </span>
+        <div class="flex item-row font-bold" id="maskList">
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full scale-150 cursor-pointer transition-all duration-200 flex items-center justify-center">
+                <svg class="h-5" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>cross</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-469.000000, -1041.000000)" fill="#ff2600"> <path d="M487.148,1053.48 L492.813,1047.82 C494.376,1046.26 494.376,1043.72 492.813,1042.16 C491.248,1040.59 488.712,1040.59 487.148,1042.16 L481.484,1047.82 L475.82,1042.16 C474.257,1040.59 471.721,1040.59 470.156,1042.16 C468.593,1043.72 468.593,1046.26 470.156,1047.82 L475.82,1053.48 L470.156,1059.15 C468.593,1060.71 468.593,1063.25 470.156,1064.81 C471.721,1066.38 474.257,1066.38 475.82,1064.81 L481.484,1059.15 L487.148,1064.81 C488.712,1066.38 491.248,1066.38 492.813,1064.81 C494.376,1063.25 494.376,1060.71 492.813,1059.15 L487.148,1053.48" id="cross" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                <img src="./img/pumpkin.png" alt="pumpkin">
+            </div>
+        </div>
+        <span class="mt-5 mb-2">
+            Hat:
+        </span>
+        <div class="flex item-row font-bold" id="hatList">
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full scale-150 cursor-pointer transition-all duration-200 flex items-center justify-center">
+                <svg class="h-5" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>cross</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-469.000000, -1041.000000)" fill="#ff2600"> <path d="M487.148,1053.48 L492.813,1047.82 C494.376,1046.26 494.376,1043.72 492.813,1042.16 C491.248,1040.59 488.712,1040.59 487.148,1042.16 L481.484,1047.82 L475.82,1042.16 C474.257,1040.59 471.721,1040.59 470.156,1042.16 C468.593,1043.72 468.593,1046.26 470.156,1047.82 L475.82,1053.48 L470.156,1059.15 C468.593,1060.71 468.593,1063.25 470.156,1064.81 C471.721,1066.38 474.257,1066.38 475.82,1064.81 L481.484,1059.15 L487.148,1064.81 C488.712,1066.38 491.248,1066.38 492.813,1064.81 C494.376,1063.25 494.376,1060.71 492.813,1059.15 L487.148,1053.48" id="cross" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                <img src="./img/crown.png" alt="crown">
+            </div>
+            <div onclick="ingradisciBottone(this)" class=" bg-gray-200 text-black m-2 h-10 w-10 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center">
+                <img src="./img/tiara.png" alt="tiara">
+            </div>
+        </div>
+        <span class="mt-5 mb-2">
+            Damage:
+        </span>
+        <input onkeypress="totalDamage()" onkeydown="totalDamage()" oninput="totalDamage()" type="number" name="damage" id="damage" class="rounded p-2 text-black w-20">
+        <span class="text-sm mt-2 w-1/2  text-center">
+            If u don't know what's the base damage of a weapon 
+            <a href="https://pixelgun.fandom.com/wiki/Pixel_Gun_3D" class="underline">
+                click here.
+            </a>
+        </span>
+
+
+        <div class="bg-white h-[5px] rounded w-1/2 my-6"></div>
+
+        <div class="flex flex-row items-center justify-center mb-6">
+            <div>
+                <span class="">
+                    Total damage:
+                </span>
+                <span class=" text-3xl font-extrabold" id="outputTotalDamage">
+                    NaN
+                </span>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
